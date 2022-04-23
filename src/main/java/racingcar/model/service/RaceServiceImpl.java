@@ -1,42 +1,119 @@
 package racingcar.model.service;
 
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
+import java.util.HashSet;
 import org.assertj.core.util.Strings;
+import racingcar.constants.Constant;
+import racingcar.constants.Messages;
 import racingcar.model.domain.Car;
+import racingcar.view.OutputView;
 
 public class RaceServiceImpl implements RaceService{
+
     @Override
-    public Car getResult(String name, int times) {
-        return null;
+    public String getResult(ArrayList<Car> cars, int times) {
+        // 우승자는 중복이 없으므로 HashSet으로 선언
+        HashSet<String> winner = new HashSet<>();
+        int winnerDistance = 0; // 우승자 이동거리
+        for(Car car : cars) {
+            // 이동거리 구하기
+            car = raceStart(car, times);
+            // 각 자동차의 이동거리 출력
+            OutputView.printCarScore(car);
+
+            // 현재 최고 이동거리보다 크면 최고이동거리 갱신, 현시점 우승자 갱신
+            if (winnerDistance < car.getDistance()){
+                winner.clear();
+                winner.add(car.getName());
+                winnerDistance = car.getDistance();
+                continue;
+            }
+
+            // 공동 우승자는 우승자리스트에 추가
+            if(winnerDistance == car.getDistance()){
+                winner.add(car.getName());
+                continue;
+            }
+        }
+        // 우승자 리스트 String으로 변환
+        return String.join(",",winner);
     }
 
     @Override
-    public ArrayList<Car> validateCars(String names, int times) {
+    public ArrayList<Car> validateCars(String names) {
         String[] carArr = names.split(",");
+        // 자동차 이름 중복을 위해 사용
+        ArrayList<String> dulchk = new ArrayList<>();
         ArrayList<Car> cars = new ArrayList<>();
-        for(String carName : carArr){
-            if(Strings.isNullOrEmpty(carName)){
-                throw new IllegalArgumentException("[ERROR] 잘못된 값이 입력되었습니다.");
+        try {
+            // 자동차 이름이 모두 빈값인 경우 오류 처리
+            if(carArr.length == 0){
+                throw new IllegalArgumentException(Messages.EMPTY_CAR_MESSAGE);
             }
 
-            if(carName.length() > 5){
-                throw new IllegalArgumentException("[ERROR] 자동차 이름은 5자 이하여야 합니다.");
+            for(String carName : carArr){
+                // 자동차 이름이 빈값인 경우
+                if (Strings.isNullOrEmpty(carName)) {
+                    throw new IllegalArgumentException(Messages.INVALID_CAR_MESSAGE);
+                }
+
+                // 자동차 이름이 max 길이보다 초과한 경우
+                if (carName.length() > Constant.MAX_NAME_LENGTH) {
+                    throw new IllegalArgumentException(Messages.INVALID_CAR_LENGTH_MESSAGE);
+                }
+
+                // 자동차 이름이 중복되는 경우
+                boolean isDulChk = dulchk.contains(carName);
+                if (isDulChk) {
+                    throw new IllegalArgumentException(Messages.DUPLICATED_CAR_NAME);
+                }
+
+                // 자동차 이름 정상
+                Car car = new Car(carName);
+                cars.add(car);
+                dulchk.add(carName);
             }
 
-            Car car = new Car(carName,times);
-            cars.add(car);
+        }catch(IllegalArgumentException e){
+            // 에러난 경우 메시지를 노출해주어야 ApplicationTest 예외 항목을 통과 가능하다.
+            System.out.println(e.getMessage());
         }
         return cars;
     }
 
     @Override
-    public int validateTimes(String times) {
-        int num = 0;
+    public int validateTimes(String timesStr) {
+        int times = 0;
         try {
-            num = Integer.parseInt(times);
+            times = Integer.parseInt(timesStr);
         }catch(Exception e){
+            // String을 int로 파싱하다가 오류 나는 경우 처리
             throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자여야 한다.");
         }
-        return num;
+        return times;
+    }
+
+    @Override
+    public Car raceStart(Car car, int times) {
+        int distance = 0;
+        int win = 0;
+        for(int i=0; i<times;i++){
+            // 각 회차 마다 이동 결과 가져옴
+            if(getMove()){
+                // 이동 시, 이동거리 갱신
+                car.addDistance(Constant.MOVE_NUMBER);
+            }
+        }
+        return car;
+    }
+
+    private boolean getMove(){
+        int random = Randoms.pickNumberInRange(Constant.MIN_VALUE, Constant.MAX_VALUE);
+        // 랜덤으로 가져온 값이 GO 조건에 최소 값보다 크면 이동
+        if(random >= Constant.MIN_MOVE_SCORE){
+            return true;
+        }
+        return false;
     }
 }

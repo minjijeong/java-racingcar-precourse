@@ -1,5 +1,7 @@
 package racingcar.model.domain;
 
+import racingcar.constants.Constant;
+
 public class Car {
     private String name;
     private int distance;
@@ -28,6 +30,13 @@ public class Car {
 
     public int getDistance(){
         return this.distance;
+    }
+    public String getDistanceStr(){
+        String distance = "";
+        for(int i = 0; i<this.distance; i++){
+            distance += Constant.MOVE_SIGN;
+        }
+        return distance;
     }
 
 }

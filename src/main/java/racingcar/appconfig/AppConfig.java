@@ -1,4 +1,4 @@
-package racingcar;
+package racingcar.appconfig;
 
 import racingcar.model.service.RaceService;
 import racingcar.model.service.RaceServiceImpl;

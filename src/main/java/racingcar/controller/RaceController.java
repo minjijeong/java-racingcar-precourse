@@ -2,10 +2,11 @@ package racingcar.controller;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.ArrayList;
-import racingcar.AppConfig;
+import racingcar.appconfig.AppConfig;
 import racingcar.model.domain.Car;
 import racingcar.model.service.RaceService;
 import racingcar.view.InputView;
+import racingcar.view.OutputView;
 
 public class RaceController {
 
@@ -17,6 +18,7 @@ public class RaceController {
     }
 
     private void initConfig() {
+        // RaceService 자동 객체 생성을 위해 AppConfig 구현
         AppConfig appConfig = new AppConfig();
         service = appConfig.raceService();
     }
@@ -25,19 +27,17 @@ public class RaceController {
         // 자동차 입력
         InputView.inputCars();
         String cars = Console.readLine();
+        carList = service.validateCars(cars);
+
         // 시도횟수 입력
         InputView.inputRaceTimes();
-        String times = Console.readLine();
-
-        System.out.println("무슨일이지???");
-        // 자동차, 시도회수 set
-        carList = service.validateCars(cars, service.validateTimes(times));
-        System.out.println(carList);
+        String timeStr = Console.readLine();
+        int times = service.validateTimes(timeStr);
 
         // 경기실행
+        String result = service.getResult(carList, times);
 
-        // 종료
-
-        // 우승자 출력
+        // 종료 & 우승자 출력
+        OutputView.printWinners(result.toString());
     }
 }

@@ -1,11 +1,14 @@
 package racingcar.view;
 
+import racingcar.constants.Constant;
+import racingcar.constants.Messages;
+
 public class InputView {
     public static void inputCars(){
-        System.out.println("경주 할 자동차 이름(이름은 쉼표(,) 기준으로 구분)");
+        System.out.println(Messages.INPUT_MESSAGE);
     }
 
     public static void inputRaceTimes(){
-        System.out.println("시도할 횟수");
+        System.out.println(Messages.INPUT_TIMES_MESSAGE);
     }
 }
