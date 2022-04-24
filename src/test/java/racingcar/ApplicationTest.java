@@ -55,13 +55,22 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
-    void 전진_정지_빈값() {
-        assertRandomNumberInRangeTest(
+    void 시도회수에_대한_예외_처리_공백() {
+        assertSimpleTest(
                 () -> {
-                    run("pobi,", "1");
-                    assertThat(output()).contains("pobi : -", "최종 우승자: pobi");
-                },
-                MOVING_FORWARD, STOP
+                    runException("pobi,wonbi"," ");
+                    assertThat(output()).contains(ERROR_MESSAGE);
+                }
+        );
+    }
+
+    @Test
+    void 시도회수에_대한_예외_처리_문자() {
+        assertSimpleTest(
+                () -> {
+                    runException("pobi,wonbi","s");
+                    assertThat(output()).contains(ERROR_MESSAGE);
+                }
         );
     }
 
