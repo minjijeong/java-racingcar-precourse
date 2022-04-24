@@ -29,49 +29,46 @@ public class RaceController {
         raceStatus = RaceStatus.READY;
     }
 
-    public void start(){
+    public void start() {
         setStartRace();
-        while(raceStatus==RaceStatus.START){
+        while (raceStatus == RaceStatus.START) {
             racing();
         }
         setRetryRace();
     }
 
-    public void racing(){
+    public void racing() {
         // 자동차 입력
         setCarList();
-        if(raceStatus==RaceStatus.ERROR){
+        if (raceStatus == RaceStatus.ERROR) {
             return;
         }
 
-        // 시도횟수 입력
         int times = setTimes();
 
-        // 경기실행
         String result = service.getResult(carList, times);
 
-        // 종료
         setEndRace();
 
-        // 우승자 출력
         OutputView.printWinners(result.toString());
     }
 
-    public void setCarList(){
+    public void setCarList() {
+        // 자동차 리스트 입력
         InputView.inputCars();
         String cars = Console.readLine();
         try {
             carList = service.validateCars(cars);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             raceStatus = RaceStatus.ERROR;
-            System.out.println(e.getMessage());
+            OutputView.printErrorMessage(e.getMessage());
             return;
         }
     }
 
-    public int setTimes(){
+    public int setTimes() {
         // 시도 회수 정상 입력될때까지 입력
-         while(times == 0){
+        while (times == 0) {
             InputView.inputRaceTimes();
             String timeStr = Console.readLine();
             times = service.validateTimes(timeStr);
@@ -79,8 +76,8 @@ public class RaceController {
         return times;
     }
 
-    public void setEndRace(){
-        if(raceStatus == RaceStatus.START) {
+    public void setEndRace() {
+        if (raceStatus == RaceStatus.START) {
             raceStatus = RaceStatus.END;
             return;
         }
@@ -88,15 +85,15 @@ public class RaceController {
         return;
     }
 
-    public void setStartRace(){
-        if(raceStatus == RaceStatus.READY){
+    public void setStartRace() {
+        if (raceStatus == RaceStatus.READY) {
             raceStatus = RaceStatus.START;
             return;
         }
     }
 
-    public void setRetryRace(){
-        if(raceStatus == RaceStatus.ERROR) {
+    public void setRetryRace() {
+        if (raceStatus == RaceStatus.ERROR) {
             raceStatus = RaceStatus.READY;
             start();
             return;

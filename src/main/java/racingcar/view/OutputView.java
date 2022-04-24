@@ -10,4 +10,6 @@ public class OutputView {
     public static void printCarScore(Car car) {
         System.out.printf("%s : %s \n", car.getName(), car.getDistanceStr());
     }
+
+    public static void printErrorMessage(String message){ System.out.printf("[ERROR] %s \n",message); }
 }

@@ -1,5 +1,5 @@
 package racingcar.constants;
 
 public enum RaceStatus {
-    READY, START, ERROR, RETRY, END;
+    READY, START, ERROR, END;
 }
