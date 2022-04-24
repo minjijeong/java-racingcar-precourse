@@ -46,41 +46,37 @@ public class RaceServiceImpl implements RaceService{
         // 자동차 이름 중복을 위해 사용
         ArrayList<String> dulchk = new ArrayList<>();
         ArrayList<Car> cars = new ArrayList<>();
-        try {
-            // 자동차 이름이 모두 빈값인 경우 오류 처리
-            if(carArr.length == 0){
-                throw new IllegalArgumentException(Messages.EMPTY_CAR_MESSAGE);
+
+        // 자동차 이름이 모두 빈값인 경우 오류 처리
+        if(carArr.length == 0){
+            throw new IllegalArgumentException(Messages.EMPTY_CAR_MESSAGE);
+        }
+
+        for(String carName : carArr){
+            // 자동차 이름이 빈값인 경우
+            if (Strings.isNullOrEmpty(carName)) {
+                throw new IllegalArgumentException(Messages.INVALID_CAR_MESSAGE);
             }
 
-            for(String carName : carArr){
-                // 자동차 이름이 빈값인 경우
-                if (Strings.isNullOrEmpty(carName)) {
-                    throw new IllegalArgumentException(Messages.INVALID_CAR_MESSAGE);
-                }
-
-                // 자동차 이름이 max 길이보다 초과한 경우
-                if (carName.length() > Constant.MAX_NAME_LENGTH) {
-                    throw new IllegalArgumentException(Messages.INVALID_CAR_LENGTH_MESSAGE);
-                }
-
-                // 자동차 이름이 중복되는 경우
-                boolean isDulChk = dulchk.contains(carName);
-                if (isDulChk) {
-                    throw new IllegalArgumentException(Messages.DUPLICATED_CAR_NAME);
-                }
-
-                // 자동차 이름 정상
-                Car car = new Car(carName);
-                cars.add(car);
-                dulchk.add(carName);
+            // 자동차 이름이 max 길이보다 초과한 경우
+            if (carName.length() > Constant.MAX_NAME_LENGTH) {
+                throw new IllegalArgumentException(Messages.INVALID_CAR_LENGTH_MESSAGE);
             }
 
-        }catch(IllegalArgumentException e){
-            // 에러난 경우 메시지를 노출해주어야 ApplicationTest 예외 항목을 통과 가능하다.
-            System.out.println(e.getMessage());
+            // 자동차 이름이 중복되는 경우
+            boolean isDulChk = dulchk.contains(carName);
+            if (isDulChk) {
+                throw new IllegalArgumentException(Messages.DUPLICATED_CAR_NAME);
+            }
+
+            // 자동차 이름 정상
+            Car car = new Car(carName);
+            cars.add(car);
+            dulchk.add(carName);
         }
         return cars;
     }
+
 
     @Override
     public int validateTimes(String timesStr) {
@@ -89,7 +85,7 @@ public class RaceServiceImpl implements RaceService{
             times = Integer.parseInt(timesStr);
         }catch(Exception e){
             // String을 int로 파싱하다가 오류 나는 경우 처리
-            throw new IllegalArgumentException("[ERROR] 시도 횟수는 숫자여야 한다.");
+            System.out.println(Messages.INVALID_TIMES_MESSAGE);
         }
         return times;
     }

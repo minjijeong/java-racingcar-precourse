@@ -6,7 +6,7 @@
 - 전진하는 조건은 0-9 상이에서 random 값을 구한 후 random 값이 4 이상일 경우 전지, 3이하면 멈춘다
 - 자동차 경주 게임을 완료한 후 누가 우승했는지 알려준다. 
 - 우승자가 1명 이상일 경우, 쉽표(,)로 이름을 구분해 출력한다. 
-- 사용자가 잘못된 값을 입력할 경우 IllegalArgumentException를 발생시키고, "[ERROR]"로 시작하는 에러 메시지를 출력 후 그부분부터 다시 입력받는다.
+- 사용자가 잘못된 값을 입력할 경우 IllegalArgumentException를 발생시키고, "[ERROR]"로 시작하는 에러 메시지를 출력 후 *그부분부터 다시 입력받는다.*
 - Exception이 아닌 IllegalArgumentException, IllegalStateException 등과 같은 명확한 유형을 처리한다. 
 
 입력

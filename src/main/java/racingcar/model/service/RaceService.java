@@ -1,7 +1,6 @@
 package racingcar.model.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import racingcar.model.domain.Car;
 
 public interface RaceService {
@@ -13,6 +12,8 @@ public interface RaceService {
 
     // 시도 회수 유효성 체크 - 숫자만 가능
     int validateTimes(String times);
+    // 시도 회수 오류 안나올때까지 다시 입력 요청할 수 있도록
+    //int setTimes(String times);
 
     Car raceStart(Car car, int times);
 }

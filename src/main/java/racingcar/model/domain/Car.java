@@ -31,6 +31,8 @@ public class Car {
     public int getDistance(){
         return this.distance;
     }
+
+    // 결과지 출력을 위해 변환 메소드
     public String getDistanceStr(){
         String distance = "";
         for(int i = 0; i<this.distance; i++){
